@@ -1,0 +1,110 @@
+body{
+    background-color: var(--bs-dark-bg-subtle);
+    font-family: poppins;
+    overflow: hidden;
+}
+
+#models,
+#overview,
+#uploadForm
+{
+    background-color: var(--bs-body-bg);
+    height: fit-content;
+}
+#cards , #models_pricing{
+    max-height: 81vh;
+    /* overflow-y: scroll; */
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+}
+#models_pricing{
+    max-height: 50vh;
+}
+
+#model_img{
+    width: 120px;
+    height: 120px;
+}
+#model_dxf_img{
+    display: none;
+}
+
+#model_qty_count{
+    display: flex;
+    width: fit-content;
+    border: 1px solid rgb(193, 202, 209);
+    -webkit-box-align: center;
+    align-items: center;
+    color: rgb(9, 44, 71);
+    height: fit-content;
+}
+.model_qty_count_btn{
+    outline: 0px;
+    cursor: pointer;
+    font-family: "Open Sans";
+    padding: 2px 4px;
+    appearance: none;
+    box-shadow: none;
+    color: rgb(9, 44, 71);
+    width: 27px;
+    height: 22px;
+    border: none;
+    border-radius: 0px;
+    font-size: 9px;
+    line-height: 14px;
+    font-weight: 200;
+    background-color: transparent;
+}
+.model_qty_count_btn:hover{
+    color: rgb(9, 44, 71);
+    border-color: rgb(132, 149, 163);
+    background-color: rgb(245, 247, 248);
+}
+#model_qty_count_number {
+    width: 32px;
+    min-width: 28px;
+    transition: width 0.5s ease 0s;
+    height: 22px;
+    padding: 0px;
+    border-top: none;
+    border-bottom: none;
+    border-image: initial;
+    border-left: 1px solid rgb(193, 202, 209);
+    border-right: 1px solid rgb(193, 202, 209);
+    background-color: transparent;
+    font-size: 11px;
+    line-height: 27px;
+    text-align: center;
+}
+#remove_model_btn{
+    font-size:14px; 
+    cursor: pointer; 
+    color:var(--bs-danger);
+}
+
+.model_div div , #model_price_div{
+    display: flex;
+    gap: .5rem;
+    font-size: 14px;
+    align-items: center;
+    margin-bottom: .5rem;
+}
+#model_price_div span{
+    font-size: 12px;
+}
+.model_div p{
+    font-weight: 300;
+    margin: 0;
+}
+.model_div select{
+    font-weight: 300;
+    padding: 4px 14px;
+    border-radius: 3px;
+    outline: none;
+    border: 1px solid rgb(193, 202, 209);
+}
+
+#model_overview_name{
+    font-size: 16px;
+    font-weight: bold;
+}
