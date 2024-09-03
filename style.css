@@ -6,16 +6,25 @@ body{
 
 #models,
 #overview,
-#uploadForm
+#uploadForm,
+#updatePricing
 {
     background-color: var(--bs-body-bg);
     height: fit-content;
 }
 #cards , #models_pricing{
     max-height: 81vh;
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+}
+#materialPostForm{
+    max-height: 60vh;
     /* overflow-y: scroll; */
     scroll-behavior: smooth;
     scrollbar-width: thin;
+}
+#remove-material-btn{
+    color: var(--bs-danger);
 }
 #models_pricing{
     max-height: 50vh;
@@ -38,7 +47,8 @@ body{
     color: rgb(9, 44, 71);
     height: fit-content;
 }
-.model_qty_count_btn{
+.model_qty_count_btn
+{
     outline: 0px;
     cursor: pointer;
     font-family: "Open Sans";

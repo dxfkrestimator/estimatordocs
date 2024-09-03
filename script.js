@@ -147,3 +147,114 @@ function estimate_models(){
         }
     });
 }
+
+
+
+
+
+//////////UPDATE PRICING////////////
+const MaterialTemplate = '<figure id="material" class="border-bottom py-4 d-flex gap-3" data-material-id="{%MATERIAL-ID%}">'+
+'<div id="material-info" class="w-75">'+
+    '<div class="d-flex flex-wrap gap-3 justify-content-between align-items-center mb-3 pe-2">'+
+        '<div class="material-data">'+
+            '<span>Material Name :</span> <input type="text" name="material-name" id="material-name" value="{%MATERIAL-NAME%}">'+
+        '</div>'+
+        '<i class="bi bi-x-lg btn fs-5 fw-bolder p-0" title="Remove Material" id="remove-material-btn"></i>'+
+    '</div>'+
+    '<div class="d-flex flex-wrap gap-3 justify-content-between align-items-center mb-3">'+
+        '<div class="material-data">'+
+            '<span>Price Per Kg (NOK) :</span> <input type="text" name="material-price" id="material-price" value="{%MATERIAL-PRICE%}">'+
+        '</div>'+
+        '<div class="material-data">'+
+            '<span>Weight Per cm<sup>2</sup> :</span> <input type="text" step="0.000001" name="material-weight" id="material-weight" value="{%MATERIAL-WEIGHT%}">'+
+        '</div>'+
+    '</div>'+
+'</div>'+
+'</figure>';
+
+$("#add-material-btn").click(function(){
+    var repTemplate = MaterialTemplate.replace("{%MATERIAL-WEIGHT%}","");
+    repTemplate = repTemplate.replace("{%MATERIAL-PRICE%}","");
+    repTemplate = repTemplate.replace("{%MATERIAL-NAME%}","");
+    var id = $("#materialPostForm figure:last-of-type").attr('data-material-id');
+    repTemplate = repTemplate.replace("{%MATERIAL-ID%}",parseInt(id)+1);    
+    $("#materialPostForm").append(repTemplate)
+    add_price_scroll()    
+})
+function add_price_scroll(){
+if($("#materialPostForm").css("height").split("px")[0] > 437){
+    $("#materialPostForm").css("overflow-y","scroll");
+}else{
+    $("#materialPostForm").css("overflow-y","");
+} 
+       
+}
+
+//remove btn
+$(document).on('click', '#remove-material-btn',function(){
+var materialFig = $(this).parent().parent().parent();
+materialFig.remove();
+add_price_scroll();
+})
+
+function joinMaterialFigs(data){
+    let res = "";
+    for (let i = 0; i < data.length; i++) {
+        let repTemplate = MaterialTemplate.replace("{%MATERIAL-NAME%}",data[i].material);
+        repTemplate = repTemplate.replace("{%MATERIAL-PRICE%}",parseFloat(data[i].price_per_kg));
+        repTemplate = repTemplate.replace("{%MATERIAL-WEIGHT%}",parseFloat(data[i].weight_rate));
+        repTemplate = repTemplate.replace("{%MATERIAL-ID%}",i);
+        res += repTemplate;
+    }
+    return res;
+}
+
+function fetchMaterials(){
+    $.ajax({
+        type: "GET",
+        url: "https://dxfkrestimator.onrender.com/material",
+        beforeSend:function(){
+            $(".spinner-grow").show();
+        },
+        success: function (response) {
+            const material = response.data;
+            let materialFigs = joinMaterialFigs(material);
+            $("#materialPostForm").html(materialFigs)
+            add_price_scroll()
+        },
+        complete: function(){
+            $(".spinner-grow").hide();
+        }
+    });
+}
+fetchMaterials();
+
+$("#material-submit-btn").click(function(){
+    if(!confirm('Are you sure you want to save these materials pricing?')){return false;}
+    var InputMaterialData = [];
+    $("#materialPostForm figure").each(function(i, obj){
+        var material_id = $(this).attr('data-material-id');
+        var material_name = $("figure[data-material-id='"+material_id+"'] #material-name").val();
+        var material_price = $("figure[data-material-id='"+material_id+"'] #material-price").val();
+        var material_weight = $("figure[data-material-id='"+material_id+"'] #material-weight").val();
+        InputMaterialData.push({
+            "material": material_name,
+            "price_per_kg": material_price,
+            "weight_rate": material_weight   
+        })
+    })
+    InputMaterialData = JSON.stringify(InputMaterialData);
+    
+    $.ajax({
+        type: "POST",
+        url: "https://dxfkrestimator.onrender.com/material",
+        data: InputMaterialData,
+        dataType:"json",
+        contentType: "application/json",
+        success: function (response) {
+            alert(response.data);
+        }
+    });
+    
+    
+});
