@@ -252,7 +252,7 @@ $("#material-submit-btn").click(function(){
         dataType:"json",
         contentType: "application/json",
         success: function (response) {
-            alert(response.data);
+            console.log(response);
         }
     });
     
