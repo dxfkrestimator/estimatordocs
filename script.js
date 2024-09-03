@@ -227,7 +227,7 @@ function fetchMaterials(){
         }
     });
 }
-fetchMaterials();
+
 
 $("#material-submit-btn").click(function(){
     if(!confirm('Are you sure you want to save these materials pricing?')){return false;}
